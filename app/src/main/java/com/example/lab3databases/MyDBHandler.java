@@ -21,7 +21,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String create_table_cmd = "CREATE TABLE " + TABLE_NAME +
-                "(" + COLUMN_ID + "INTEGER PRIMARY KEY, " +
+                "(" + COLUMN_ID + " INTEGER PRIMARY KEY, " +
                 COLUMN_PRODUCT_NAME + " TEXT, " +
                 COLUMN_PRODUCT_PRICE + " DOUBLE " + ")";
 
@@ -50,5 +50,17 @@ public class MyDBHandler extends SQLiteOpenHelper {
 
         db.insert(TABLE_NAME, null, values);
         db.close();
+    }
+    // products (id INTEGER PRIMARY KEY, name TEXT, price DOUBLE)
+    public Cursor findProduct(Product product) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String name = product.getProductName();
+        double price = product.getProductPrice();
+
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_PRODUCT_NAME +
+                " = \"" + name + "\"" + " OR " + COLUMN_PRODUCT_PRICE + " = \"" + price + "\"";
+
+        return db.rawQuery(query, null);
     }
 }

@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                 productName.setText("");
                 productPrice.setText("");
 
-//                Toast.makeText(MainActivity.this, "Add product", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(MainActivity.this, "Add product", Toast.LENGTH_SHORT).show();
                 viewProducts();
             }
         });
@@ -68,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Find product", Toast.LENGTH_SHORT).show();
+                String name = productName.getText().toString();
+                double price = Double.parseDouble(productPrice.getText().toString());
+                Product product = new Product(name, price);
+
+                Cursor c =  dbHandler.findProduct(product);
+
+                productName.setText("");
+                productPrice.setText("");
+
+                viewProducts(c);
             }
         });
 
@@ -85,6 +95,21 @@ public class MainActivity extends AppCompatActivity {
     private void viewProducts() {
         productList.clear();
         Cursor cursor = dbHandler.getData();
+        if (cursor.getCount() == 0) {
+            Toast.makeText(MainActivity.this, "Nothing to show", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()) {
+                productList.add(cursor.getString(1) + " (" +cursor.getString(2)+")");
+            }
+        }
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, productList);
+        productListView.setAdapter(adapter);
+    }
+
+    private void viewProducts(Cursor c) {
+        productList.clear();
+        Cursor cursor = c;
         if (cursor.getCount() == 0) {
             Toast.makeText(MainActivity.this, "Nothing to show", Toast.LENGTH_SHORT).show();
         } else {
