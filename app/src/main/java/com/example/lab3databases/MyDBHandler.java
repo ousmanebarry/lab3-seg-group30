@@ -51,7 +51,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
-    // products (id INTEGER PRIMARY KEY, name TEXT, price DOUBLE)
+
     public Cursor findProduct(Product product) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -62,5 +62,21 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 " = \"" + name + "\"" + " OR " + COLUMN_PRODUCT_PRICE + " = \"" + price + "\"";
 
         return db.rawQuery(query, null);
+    }
+
+    public boolean deleteProduct(String productname){
+        boolean result = false;
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + "WHERE" + COLUMN_PRODUCT_NAME + "=\""
+                + productname + "\"";
+        Cursor cursor = db.rawQuery(query,null);
+        if(cursor.moveToFirst()){
+            String idStr = cursor.getString(0);
+            db.delete(TABLE_NAME,COLUMN_ID+" = "+idStr,null);
+            cursor.close();
+            result = true;
+        }
+        db.close();
+        return result;
     }
 }
