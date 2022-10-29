@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class MyDBHandler extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "products";
@@ -53,17 +54,19 @@ public class MyDBHandler extends SQLiteOpenHelper {
     }
 
     public boolean deleteProduct(String productname){
-        boolean result = false;
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + "WHERE" + COLUMN_PRODUCT_NAME + "=\""
+        boolean result = false;
+        /*
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_PRODUCT_NAME + "=\""
                 + productname + "\"";
         Cursor cursor = db.rawQuery(query,null);
-        if(cursor.moveToFirst()){
-            String idStr = cursor.getString(0);
-            db.delete(TABLE_NAME,COLUMN_ID+" = "+idStr,null);
-            cursor.close();
+*/
+        //if(cursor.moveToFirst()){
+            db.delete(TABLE_NAME,COLUMN_PRODUCT_NAME +" =\""+productname + "\"",null);
+            //cursor.close();
             result = true;
-        }
+        //}
         db.close();
         return result;
     }

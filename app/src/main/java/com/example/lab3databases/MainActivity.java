@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -74,8 +75,21 @@ public class MainActivity extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Delete product", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Deleting product...", Toast.LENGTH_SHORT).show();
+                boolean result = false;
+                try {
+                    result = dbHandler.deleteProduct(productName.getText().toString());
+                }catch (Exception e){
+                    Log.d("Deletion", e.toString());
+                }
+                if(result){
+                    Toast.makeText(MainActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(MainActivity.this, "Could not find product", Toast.LENGTH_SHORT).show();
+                }
+                viewProducts();
             }
+
         });
 
 
