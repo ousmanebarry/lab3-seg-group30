@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -67,12 +68,14 @@ public class MainActivity extends AppCompatActivity {
         findBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Find product", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(MainActivity.this, "Find product", Toast.LENGTH_SHORT).show();
                 String name = productName.getText().toString();
-                double price = Double.parseDouble(productPrice.getText().toString());
-                Product product = new Product(name, price);
+                String price = productPrice.getText().toString();
 
-                Cursor c =  dbHandler.findProduct(product);
+                System.out.println("name is empty : " + TextUtils.isEmpty(name));
+                System.out.println("price is empty : " + TextUtils.isEmpty(price));
+
+                Cursor c =  dbHandler.findProduct(name, price, TextUtils.isEmpty(name), TextUtils.isEmpty(price));
 
                 productName.setText("");
                 productPrice.setText("");

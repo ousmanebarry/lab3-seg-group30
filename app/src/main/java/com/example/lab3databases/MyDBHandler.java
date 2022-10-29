@@ -52,14 +52,25 @@ public class MyDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public Cursor findProduct(Product product) {
+    public Cursor findProduct(String productName, String productPrice, boolean nCheck, boolean pCheck) {
+        String query;
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String name = product.getProductName();
-        double price = product.getProductPrice();
-
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_PRODUCT_NAME +
-                " = \"" + name + "\"" + " OR " + COLUMN_PRODUCT_PRICE + " = \"" + price + "\"";
+        if (!nCheck && !pCheck) {
+            double price = Double.parseDouble(productPrice);
+            query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_PRODUCT_NAME +
+                    " = \"" + productName + "\"" + " AND " + COLUMN_PRODUCT_PRICE + " = \"" +
+                    price + "\"";
+        } else if (!nCheck && pCheck) {
+            query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_PRODUCT_NAME +
+                    " = \"" + productName + "\"";
+        } else if (nCheck && !pCheck)  {
+            double price = Double.parseDouble(productPrice);
+            query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_PRODUCT_PRICE + " = \"" +
+                    price + "\"";
+        } else {
+            query = "SELECT * FROM " + TABLE_NAME;
+        }
 
         return db.rawQuery(query, null);
     }
