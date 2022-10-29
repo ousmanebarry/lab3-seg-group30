@@ -76,21 +76,16 @@ public class MyDBHandler extends SQLiteOpenHelper {
         return db.rawQuery(query, null);
     }
 
-    public boolean deleteProduct(String productname){
+    public boolean deleteProduct(String productName){
         SQLiteDatabase db = this.getWritableDatabase();
-        boolean result = false;
-        /*
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_PRODUCT_NAME + "=\""
-                + productname + "\"";
-        Cursor cursor = db.rawQuery(query,null);
-*/
-        //if(cursor.moveToFirst()){
-            db.delete(TABLE_NAME,COLUMN_PRODUCT_NAME +" =\""+productname + "\"",null);
-            //cursor.close();
-            result = true;
-        //}
+
+        int nRows = db.delete(TABLE_NAME,COLUMN_PRODUCT_NAME +" =\""+ productName + "\"",null);
         db.close();
-        return result;
+
+        if (nRows != 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

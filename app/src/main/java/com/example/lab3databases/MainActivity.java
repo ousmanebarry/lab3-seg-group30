@@ -73,9 +73,6 @@ public class MainActivity extends AppCompatActivity {
                 String name = productName.getText().toString();
                 String price = productPrice.getText().toString();
 
-                System.out.println("name is empty : " + TextUtils.isEmpty(name));
-                System.out.println("price is empty : " + TextUtils.isEmpty(price));
-
                 Cursor c =  dbHandler.findProduct(name, price, TextUtils.isEmpty(name), TextUtils.isEmpty(price));
 
                 productName.setText("");
